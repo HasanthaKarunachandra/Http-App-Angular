@@ -10,12 +10,15 @@ import { NewComponent } from './components/new/new.component';
 import { UpdateComponent } from './components/update/update.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatButtonModule} from "@angular/material/button";
-import {HttpClientModule} from "@angular/common/http";
+import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {MatFormField, MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatSnackBarModule} from "@angular/material/snack-bar";
 import {MatIconModule} from "@angular/material/icon";
+import { LoadingComponent } from './components/loading/loading.component';
+import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
+import {HttpManagerInterceptor} from "./components/interceptors/http-manager.interceptor";
 
 @NgModule({
   declarations: [
@@ -24,7 +27,8 @@ import {MatIconModule} from "@angular/material/icon";
     DeleteComponent,
     FindComponent,
     NewComponent,
-    UpdateComponent
+    UpdateComponent,
+    LoadingComponent
   ],
   imports: [
     BrowserModule,
@@ -37,10 +41,13 @@ import {MatIconModule} from "@angular/material/icon";
     FormsModule,
     ReactiveFormsModule,
     MatSnackBarModule,
-    MatIconModule
+    MatIconModule,
+    MatProgressSpinnerModule
 
   ],
-  providers: [],
+  providers: [
+    {provide:HTTP_INTERCEPTORS,useClass:HttpManagerInterceptor,multi:true}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
